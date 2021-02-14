@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using GeometricFigures;
 using GeometricFigures.Implementations;
 using GeometricFigures.Interfaces;
@@ -21,15 +23,37 @@ namespace OOP
                     new Square(20), 
                     new Triangle(3, 4, 5), 
                 });
-            
+   
             shapes.DisplayShapesInfo();
 
             var totalPerimeterSum = shapes.TotalShapesPerimeter();
             var totalSquareSum = shapes.TotalShapesSquare();
-
-            Console.WriteLine($"Total perimeter sum: {totalPerimeterSum}\ntotal square sum: {totalSquareSum}");
+            
+            var kek = Kek(shapes); 
+           
+            Console.WriteLine($"{kek}\nTotal perimeter sum: {totalPerimeterSum}\ntotal square sum: {totalSquareSum}");
             
             Console.ReadKey();
+        }
+
+        public static string Kek(ShapeCollectionWrapper shapes)
+        {
+            if (shapes.Shapes.Count == 0)
+            {
+                return "";
+            }
+            var kekLength = shapes.Shapes.Select(shape => shape.ToString())
+                .OrderByDescending(x => x.Length)
+                .First()
+                .Length;
+            
+            var kek = new char[kekLength];
+            for (var i = 0; i < kekLength; ++i)
+            {
+                kek[i] = '-';
+            }
+            
+            return new string(kek);
         }
     }
 }
