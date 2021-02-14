@@ -10,13 +10,18 @@ namespace OOP
         private static void Main(string[] args)
         {
             var shapes = new ShapeCollectionWrapper();
-            shapes.Shapes.Add(new Circle(10));
-            shapes.Shapes.Add(new Rectangle(20, 10));
+            shapes.Add(new Circle(100));
+            shapes.Add(new Rectangle(10, 10));
+            shapes.AddRange(new IShape[] { new Circle(20), new Rectangle(1, 1), });
+            
+            shapes.DisplayShapesInfo();
 
-            foreach (var shape in shapes.Shapes)
-            {
-                Console.WriteLine(shape);
-            }
+            var totalPerimeterSum = shapes.TotalShapesPerimeter();
+            var totalSquareSum = shapes.TotalShapesSquare();
+
+            Console.WriteLine($"Total perimeter sum: {totalPerimeterSum}\ntotal square sum: {totalSquareSum}");
+            
+            Console.ReadKey();
         }
     }
 }

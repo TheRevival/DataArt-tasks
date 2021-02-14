@@ -53,5 +53,14 @@ namespace GeometricFigures
                 Console.WriteLine(shape);
             }
         }
+
+        public void Add(IShape shape)
+        {
+            Shapes.Add(shape);
+        }
+        public void AddRange(IEnumerable<IShape> shapes)
+        {
+            Shapes.AddRange(shapes);
+        }
     }
 }
