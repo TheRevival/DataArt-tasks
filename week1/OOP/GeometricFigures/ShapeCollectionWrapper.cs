@@ -33,7 +33,6 @@ namespace GeometricFigures
         /// <summary>
         /// Returns sum of all shapes square.
         /// </summary>
-        /// <returns></returns>
         public double TotalShapesSquare()
             => Shapes.Select(shape => shape.GetSquare())
                     .Sum();
@@ -41,7 +40,6 @@ namespace GeometricFigures
         /// <summary>
         /// Return sum of all shapes perimeter.
         /// </summary>
-        /// <returns></returns>
         public double TotalShapesPerimeter()
             => Shapes.Select(shape => shape.GetPerimeter())
                     .Sum();
