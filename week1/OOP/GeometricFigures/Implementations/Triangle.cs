@@ -51,7 +51,17 @@ namespace GeometricFigures.Implementations
                 _thirdSide = value;
             }
         }
-
+        /// <summary>
+        /// Returns true, if sum of any two sides of triangle are greater, than the third one.
+        /// Otherwise, returns false.
+        /// Keep it virtual for overriding in inherited entities of Triangle-family.
+        /// </summary>
+        protected virtual bool IsCorrectTriangle()
+        {
+            return FirstSide + SecondSide > ThirdSide 
+                   && FirstSide + ThirdSide > SecondSide 
+                   && SecondSide + ThirdSide > FirstSide;
+        }
         public Triangle(double firstSide, double secondSide, double thirdSide)
         {
             if (IsCorrectTriangle())
@@ -64,19 +74,6 @@ namespace GeometricFigures.Implementations
                                             "two triangle sides must be more than the third one!", nameof(Triangle));
             }
         }
-
-        /// <summary>
-        /// Returns true, if sum of any two sides of triangle are more, than the third one.
-        /// Otherwise, returns false.
-        /// Keep it virtual to overriding in inherited entity of Triangle-family.
-        /// </summary>
-        protected virtual bool IsCorrectTriangle()
-        {
-            return FirstSide + SecondSide > ThirdSide 
-                   && FirstSide + ThirdSide > SecondSide 
-                   && SecondSide + ThirdSide > FirstSide;
-        }
-
         public Triangle()
             : this(1, 1, 1)
         { }
