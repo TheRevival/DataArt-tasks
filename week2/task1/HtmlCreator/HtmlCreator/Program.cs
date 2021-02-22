@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using HtmlCreator.Core;
 using Microsoft.VisualBasic;
 
@@ -39,13 +42,28 @@ namespace HtmlCreator
                         $"\n\t\t{string.Join(" |\n\t\t", refsToDisplay)}" +
                        $"\n\t</body>\n";
             
-            var htmlText = 
-                $"<html>" 
-                    + $"{header}" 
-                    + $"{body}" 
-              + $"</html>";
+            var htmlText = new string[]
+            {
+                "<html>", 
+                $"{header}", 
+                 $"{body}",
+                 "</html>"
+            };
 
-            using var 
+            var systemPath = System.Environment.
+                GetFolderPath(
+                    Environment.SpecialFolder.CommonApplicationData
+                );
+            var complete = Path.Combine(systemPath, "index.html");
+
+            //File.Create(complete);
+
+            //using var stream = File.Open(complete, FileMode.Open, FileAccess.Write, FileShare.Read);
+            
+            // Your file in C:\ProgramData\index.html
+            File.WriteAllText(complete, string.Concat(htmlText));
+            
+            var proc = Process.Start(@"cmd.exe ", @"/c " + complete); 
         }
     }
 }
