@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using SortedList.Core.Helpers.Exceptions;
 using SortedList.Core.Helpers.Extensions;
 using SortedList.Core.Interfaces;
 
@@ -17,8 +18,8 @@ namespace SortedList.Core.Implementations
         {
             if (items.IsSorted() is not true)
             {
-                throw new ArgumentException("The source collection does not sorted!",
-                    nameof(System.Collections.SortedList));
+                throw new NonSortedCollectionException($"The source collection does not sorted! " +
+                                                       $"Exception thrown here: {nameof(SortedList)}");
             }
 
             _items = items as List<T>;
