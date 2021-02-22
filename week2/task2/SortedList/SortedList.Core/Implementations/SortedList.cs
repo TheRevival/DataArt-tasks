@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using SortedList.Core.Interfaces;
 
 namespace SortedList.Core.Implementations
@@ -10,24 +11,48 @@ namespace SortedList.Core.Implementations
     {
         private readonly List<T> _items;
         public int Count => _items.Count;
-        
+
         public SortedList(IEnumerable<T> items)
-            => _items = items as List<T>;
-        
+        {
+            _items = new List<T>(items.OrderBy(val => val));
+        }
+
         public SortedList()
             : this(new List<T>())
-        { }
+        { } 
         
-        public bool IsSortedByDescending()
-        {
-            if (Count == 0 || Count == 1)
-            {
-                return true;
-            }
+        public bool IsSorted()
+       {
+           if (_items.Count == 0 || _items.Count == 1)
+           {
+               return true;
+           }
 
-            return _items[0].CompareTo(_items[1]) < 0;
-        }
-        #region IEnumerable implementation
+           return _items.SequenceEqual(_items.OrderBy(val => val));
+       }
+
+       public void Add(T value)
+       {
+          _items.Add(value);
+          // TODO: using Extension methods, add QuickSort to IEnumerable, that will extremely increase the performance. 
+          _items.Sort();
+       }
+       public void AddRange(IEnumerable<T> values)
+       {
+           _items.AddRange(values);
+           // TODO: using Extension methods, add QuickSort to IEnumerable, that will extremely increase the performance. 
+           _items.Sort();
+       }
+       public bool Remove(T itemToRemove)
+       {
+           return _items.Remove(itemToRemove);
+       }
+       public int RemoveAll(Predicate<T> match)
+       {
+           return _items.RemoveAll(match);
+       }
+
+       #region IEnumerable implementation
         public IEnumerator<T> GetEnumerator()
         {
             return _items.GetEnumerator();
