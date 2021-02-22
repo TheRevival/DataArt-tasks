@@ -2,10 +2,8 @@
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Text.RegularExpressions;
 using HtmlCreator.Core;
-using Microsoft.VisualBasic;
 
 namespace HtmlCreator
 {
@@ -13,7 +11,7 @@ namespace HtmlCreator
     {
         private static void Main(string[] args)
         {
-            var metatags = "<meta charset=\"UTF - 8\">";
+            var metatags = "<meta charset=\"UTF-8\">";
 
             var header =
                 $"\n\t<head>"
@@ -33,22 +31,29 @@ namespace HtmlCreator
                 new Tag()
                 {
                     Content = "<a href=\"mailto:ivan@hotmail.com\">Ivan</a>"
-                }
+                }, 
+                new Tag()
+                {
+                    Content = "<a href=\"mailto:ivan@hotmail.com\">Maxim<script>alert(\'Name!\')</script></a>"
+                } 
             };
-
-            var refsToDisplay = refs.Select(tag => tag.Content);
+            // Task 2:
+            // https://stackoverflow.com/questions/19414829/how-to-remove-script-tags-from-an-html-page-using-c .
+            var regexRemScript = new Regex(@"<script[^>]*>[\s\S]*?</script>");
+            
+            var refsToDisplay = refs
+                .Select(tag => regexRemScript.Replace(tag.Content, ""));
             
             var body = $"\n\t<body>" +
-                        $"\n\t\t{string.Join(" |\n\t\t", refsToDisplay)}" +
+                        $"\n\t\t{string.Join(" |<br>\n\t\t", refsToDisplay)}" +
                        $"\n\t</body>\n";
+
+            var htmlText =
+                "<html>" +
+                $"{header}" +
+                $"{body}" +
+                "</html>";
             
-            var htmlText = new string[]
-            {
-                "<html>", 
-                $"{header}", 
-                 $"{body}",
-                 "</html>"
-            };
 
             var systemPath = System.Environment.
                 GetFolderPath(
@@ -56,14 +61,11 @@ namespace HtmlCreator
                 );
             var complete = Path.Combine(systemPath, "index.html");
 
-            //File.Create(complete);
-
-            //using var stream = File.Open(complete, FileMode.Open, FileAccess.Write, FileShare.Read);
-            
             // Your file in C:\ProgramData\index.html
-            File.WriteAllText(complete, string.Concat(htmlText));
+            File.WriteAllText(complete, htmlText);
             
-            var proc = Process.Start(@"cmd.exe ", @"/c " + complete); 
+            // Runs our html-file.
+            var proc = Process.Start(@"cmd.exe ", @"/c " + complete);
         }
     }
 }
