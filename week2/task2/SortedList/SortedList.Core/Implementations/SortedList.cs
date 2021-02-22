@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using SortedList.Core.Helpers.Extensions;
 using SortedList.Core.Interfaces;
 
 namespace SortedList.Core.Implementations
@@ -14,24 +15,19 @@ namespace SortedList.Core.Implementations
 
         public SortedList(IEnumerable<T> items)
         {
-            _items = new List<T>(items.OrderBy(val => val));
-        }
+            if (items.IsSorted() is not true)
+            {
+                throw new ArgumentException("The source collection does not sorted!",
+                    nameof(System.Collections.SortedList));
+            }
 
+            _items = items as List<T>;
+        }
         public SortedList()
             : this(new List<T>())
-        { } 
+        { }
         
-        public bool IsSorted()
-       {
-           if (_items.Count == 0 || _items.Count == 1)
-           {
-               return true;
-           }
-
-           return _items.SequenceEqual(_items.OrderBy(val => val));
-       }
-
-       public void Add(T value)
+        public void Add(T value)
        {
           _items.Add(value);
           // TODO: using Extension methods, add QuickSort to IEnumerable, that will extremely increase the performance. 

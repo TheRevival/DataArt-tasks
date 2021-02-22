@@ -5,12 +5,7 @@ namespace SortedList.Core.Interfaces
 {
     public interface ISortedList<T> : IEnumerable<T>
     {
-        /// <summary>
-        /// Returns true if collection inside implemented entity is sorted by descending.
-        /// Otherwise, returns false.
-        /// </summary>
-        bool IsSorted();
-    
+
         /// <summary>
         /// This method MUST keep contract that after every insert into collection it will be sorted.
         /// </summary>
